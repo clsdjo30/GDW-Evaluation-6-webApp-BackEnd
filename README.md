@@ -135,51 +135,65 @@ Pour charger les fixtures  :
 
 ``symfony console doctrine:fixtures:load ou d:f:l``
 
-## Installation de Paginator
+## Installation du bundle EAsyAdmin
 
-Integration du bundle KNP Paginator avec la commande Composer :
+## Deployer le site en production sur Heroku :
 
-````composer require knplabs/knp-paginator-bundle````
+1. Creation du dossier projet sur heroku
 
-Dans le Controller on injecte Paginator, Request et le repository necessaire
-``````
-use App\Repository\MissionRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Knp\Component\Pager\PaginatorInterface;
-``````
+``
+heroku create <nom du projet>
+``
 
-````````
-public function index(
-        MissionRepository $missionRepository,
-        PaginatorInterface $paginator, // Inject Knp Paginator bundle
-        Request $request // Request needed to get the page number
-        ): Response
-    {
-        $data = $missionRepository->findAll(); //Request with data 
-        
-        $missions = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1), // URL page number
-            4 // Result per page
-        );
-
-        return $this->render('home/index.html.twig', [
-            'missions' => $missions
-        ]);
-    }
-````````
-Dans le template Twig on ajoute :
+2. Création d'un fichier Procfile à la racine du projet
 
 ````
-{{ knp_pagination_render(missions, 'partials/_pagination.html.twig'//<--template pour l'affichage ) }}
+## Insérer le code ci dessous ##
+release: php bin/console doctrine:migrations:migrate
+web: heroku-php-apache2 public/
 ````
 
-## Install Twig String Extra
-Permet d'utiliser le String Component de Symfony
+3. Configurer la variable d'environnement en mode production avec la commande
+
+``
+heroku config:set APP_ENV=prod
+``
+
+4. Ajout de Apache
+
+``
+web: heroku-php-apache2 public/
+``
+
+5. Dans Heroku, ajouter le addons pour la BDD. J'ai choisi ClearDB Mysql pour son plan gratuit
+
+- Dans le client Heroku, dans l'onglet "Settings/Config Vars", on ajoute une nouvelle Variable pour la BDD
+  ``
+  DATABASE_URL="<Renseigner le lien de "CLEARDB_DATABASE_URL">"
+  ``
+- Dans le fichier .env à la racine du projet on modifie la DATABASE_URL avec le lien vers la BDD créee dans heroku
+
+
+6. Ajout du buildpacks pour Nodejs
+
+``
+heroku buildpacks:add heroku/nodejs
+``
+
+Dans le fichier package.json on ajoute en dessous de "scripts"
 
 ````
-composer require twig/string-extra
+ "engines": {
+        "node": "<numéro de version de node installer sur la machine>",
+        "npm": "<numéro de npm installer sur la machine>"
+    },
 ````
+
+7. Deployement du projet sur le depot Heroku
+
+``
+git push heroku main
+``
 
 
 
