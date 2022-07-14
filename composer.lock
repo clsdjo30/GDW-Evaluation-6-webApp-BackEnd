@@ -1,20 +1,20 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "1ef75c8815627e8315a1aa65003ae100",
-    "packages": [
-        {
-            "name": "doctrine/annotations",
-            "version": "1.13.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/annotations.git",
-                "reference": "648b0343343565c4a056bfc8392201385e8d89f0"
-            },
-            "dist": {
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "e2c6ec7c49734db543f5c3fc9b78ed81",
+  "packages": [
+    {
+      "name": "doctrine/annotations",
+      "version": "1.13.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/doctrine/annotations.git",
+        "reference": "648b0343343565c4a056bfc8392201385e8d89f0"
+      },
+      "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/annotations/zipball/648b0343343565c4a056bfc8392201385e8d89f0",
                 "reference": "648b0343343565c4a056bfc8392201385e8d89f0",
@@ -2386,26 +2386,52 @@
             ],
             "description": "This bundle provides a way to configure your controllers with annotations",
             "keywords": [
-                "annotations",
-                "controllers"
+              "annotations",
+              "controllers"
             ],
-            "support": {
-                "issues": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/issues",
-                "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.6"
-            },
-            "time": "2022-01-14T11:51:13+00:00"
+          "support": {
+            "issues": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/issues",
+            "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.6"
+          },
+          "time": "2022-01-14T11:51:13+00:00"
         },
-        {
-            "name": "symfony/asset",
-            "version": "v6.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/asset.git",
-                "reference": "dc6f572f142627d42ba88a42ea34f79d3776ee6c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/asset/zipball/dc6f572f142627d42ba88a42ea34f79d3776ee6c",
+    {
+      "name": "symfony/apache-pack",
+      "version": "v1.0.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/apache-pack.git",
+        "reference": "3aa5818d73ad2551281fc58a75afd9ca82622e6c"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/apache-pack/zipball/3aa5818d73ad2551281fc58a75afd9ca82622e6c",
+        "reference": "3aa5818d73ad2551281fc58a75afd9ca82622e6c",
+        "shasum": ""
+      },
+      "type": "symfony-pack",
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "description": "A pack for Apache support in Symfony",
+      "support": {
+        "issues": "https://github.com/symfony/apache-pack/issues",
+        "source": "https://github.com/symfony/apache-pack/tree/master"
+      },
+      "time": "2017-12-12T01:46:35+00:00"
+    },
+    {
+      "name": "symfony/asset",
+      "version": "v6.1.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/asset.git",
+        "reference": "dc6f572f142627d42ba88a42ea34f79d3776ee6c"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/asset/zipball/dc6f572f142627d42ba88a42ea34f79d3776ee6c",
                 "reference": "dc6f572f142627d42ba88a42ea34f79d3776ee6c",
                 "shasum": ""
             },
