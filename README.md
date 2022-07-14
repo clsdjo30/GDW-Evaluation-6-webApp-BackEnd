@@ -175,10 +175,31 @@ Dans le template Twig on ajoute :
 ````
 
 ## Install Twig String Extra
+
 Permet d'utiliser le String Component de Symfony
 
 ````
 composer require twig/string-extra
+````
+
+### Deployer le site en production sur Heroku :
+
+Creation du dossier projet sur heroku
+
+```
+heroku create <nom du projet>
+```
+
+Ajout du fichier Procfile à la racine du projet et ajouter le path public ( chemin d'acces)
+
+````
+web: heroku-php-apache2 public/
+````
+
+Configurer la variable d'environnement en mode production avec la commande
+
+````
+heroku config:set APP_ENV=prod
 ````
 
 
