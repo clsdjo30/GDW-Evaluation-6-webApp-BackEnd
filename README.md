@@ -137,6 +137,24 @@ Pour charger les fixtures  :
 
 ## Installation du bundle EAsyAdmin
 
+1. Pour installer le bundle EasyAdmin:
+
+``
+composer require easycorp/easyadmin-bundle
+``
+
+2. Pour créer le panel d'administration:
+
+``
+composer require easycorp/easyadmin-bundle
+``
+
+3. Generer un CRUD:
+
+``
+symfony console make:admin:crud
+``
+
 ## Deployer le site en production sur Heroku :
 
 1. Creation du dossier projet sur heroku
@@ -168,9 +186,11 @@ web: heroku-php-apache2 public/
 5. Dans Heroku, ajouter le addons pour la BDD. J'ai choisi ClearDB Mysql pour son plan gratuit
 
 - Dans le client Heroku, dans l'onglet "Settings/Config Vars", on ajoute une nouvelle Variable pour la BDD
-  ``
-  DATABASE_URL="<Renseigner le lien de "CLEARDB_DATABASE_URL">"
-  ``
+
+``
+DATABASE_URL="<Renseigner le lien de "CLEARDB_DATABASE_URL">"
+``
+
 - Dans le fichier .env à la racine du projet on modifie la DATABASE_URL avec le lien vers la BDD créee dans heroku
 
 
