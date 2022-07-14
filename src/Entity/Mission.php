@@ -50,6 +50,14 @@ class Mission
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $endAt;
 
+    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'mission_country')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Country $country;
+
+    #[ORM\ManyToOne(targetEntity: Skill::class, inversedBy: 'mission_types')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Skill $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,6 +119,30 @@ class Mission
     public function setEndAt(?DateTimeImmutable $endAt): self
     {
         $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getType(): ?Skill
+    {
+        return $this->type;
+    }
+
+    public function setType(?Skill $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

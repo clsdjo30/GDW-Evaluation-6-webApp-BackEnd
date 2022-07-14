@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CountryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +26,14 @@ class Country
     #[Assert\NotBlank]
     #[Assert\Length(min: 5)]
     private ?string $nationality;
+
+    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Mission::class, orphanRemoval: true)]
+    private Collection $mission_country;
+
+    public function __construct()
+    {
+        $this->mission_country = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -50,6 +60,36 @@ class Country
     public function setNationality(string $nationality): self
     {
         $this->nationality = $nationality;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mission>
+     */
+    public function getMissionCountry(): Collection
+    {
+        return $this->mission_country;
+    }
+
+    public function addMissionCountry(Mission $missionCountry): self
+    {
+        if (!$this->mission_country->contains($missionCountry)) {
+            $this->mission_country[] = $missionCountry;
+            $missionCountry->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMissionCountry(Mission $missionCountry): self
+    {
+        if ($this->mission_country->removeElement($missionCountry)) {
+            // set the owning side to null (unless already changed)
+            if ($missionCountry->getCountry() === $this) {
+                $missionCountry->setCountry(null);
+            }
+        }
 
         return $this;
     }
