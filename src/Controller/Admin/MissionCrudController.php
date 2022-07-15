@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Mission;
-use DateTimeImmutable;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -47,7 +47,7 @@ class MissionCrudController extends AbstractCrudController
 
         yield AssociationField::new('type', 'Type de mission')->setColumns(6);
         yield DateField::new('startAt', 'Débute le:')
-            ->renderAsNativeWidget(false)
+            ->renderAsChoice(false)
             ->setColumns(3);
 
 
@@ -66,8 +66,8 @@ class MissionCrudController extends AbstractCrudController
             return;
         }
 
-        $entityInstance->setStartAt(new DateTimeImmutable());
-        $entityInstance->setEndAt(new DateTimeImmutable());
+        $entityInstance->setStartAt(new DateTime());
+        $entityInstance->setEndAt(new DateTime());
 
         $this->addFlash('success', 'Votre Mission a bien été ajouter à votre liste de mission');
 

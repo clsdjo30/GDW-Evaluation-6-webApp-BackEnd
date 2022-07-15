@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MissionRepository;
-use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,11 +44,11 @@ class Mission
         maxMessage: 'la déscription est trop longue')]
     private ?string $description;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $startAt;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $startAt;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?DateTimeImmutable $endAt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $endAt;
 
     #[ORM\ManyToOne(targetEntity: Country::class, cascade: ['persist', 'remove'], inversedBy: 'mission_country')]
     #[ORM\JoinColumn(nullable: false)]
@@ -99,24 +99,24 @@ class Mission
         return $this;
     }
 
-    public function getStartAt(): ?DateTimeImmutable
+    public function getStartAt(): ?DateTimeInterface
     {
         return $this->startAt;
     }
 
-    public function setStartAt(DateTimeImmutable $startAt): self
+    public function setStartAt(DateTimeInterface $startAt): self
     {
         $this->startAt = $startAt;
 
         return $this;
     }
 
-    public function getEndAt(): ?DateTimeImmutable
+    public function getEndAt(): ?DateTimeInterface
     {
         return $this->endAt;
     }
 
-    public function setEndAt(?DateTimeImmutable $endAt): self
+    public function setEndAt(?DateTimeInterface $endAt): self
     {
         $this->endAt = $endAt;
 
