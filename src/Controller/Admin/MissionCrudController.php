@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Mission;
+use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -53,5 +55,20 @@ class MissionCrudController extends AbstractCrudController
 
     }
 
+    public function persistEntity(EntityManagerInterface $em, $entityInstance): void
+    {
+
+
+        if (!$entityInstance instanceof Mission) {
+            return;
+        }
+
+        $entityInstance->setStartAt(new DateTimeImmutable());
+        $entityInstance->setEndAt(new DateTimeImmutable());
+
+        $this->addFlash('success', 'Votre Mission a bien été ajouter à votre liste de mission');
+
+        parent::persistEntity($em, $entityInstance);
+    }
 
 }
