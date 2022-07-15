@@ -42,11 +42,11 @@ class MissionCrudController extends AbstractCrudController
         yield TextField::new('title', 'Titre de mission')->setColumns(6);
         yield TextField::new('code_name', 'Nom de Code')->setColumns(6);
 
-        yield AssociationField::new('type')->setColumns(6);
-        yield DateField::new('startAt')->setColumns(3);
-        yield DateField::new('endAt')->setColumns(3);
+        yield AssociationField::new('type', 'Type de mission')->setColumns(6);
+        yield DateField::new('startAt', 'Débute le:')->setColumns(3);
+        yield DateField::new('endAt', 'Se termine: ')->setColumns(3);
 
-        yield AssociationField::new('country');
+        yield AssociationField::new('country', 'Pays de mission');
 
         yield TextareaField::new('description')->setColumns(6);
 
