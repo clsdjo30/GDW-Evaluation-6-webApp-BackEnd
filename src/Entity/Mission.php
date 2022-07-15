@@ -50,11 +50,11 @@ class Mission
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $endAt;
 
-    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'mission_country')]
+    #[ORM\ManyToOne(targetEntity: Country::class, cascade: ['persist', 'remove'], inversedBy: 'mission_country')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Country $country;
 
-    #[ORM\ManyToOne(targetEntity: Skill::class, inversedBy: 'mission_types')]
+    #[ORM\ManyToOne(targetEntity: Skill::class, cascade: ['persist', 'remove'], inversedBy: 'mission_types')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Skill $type;
 
