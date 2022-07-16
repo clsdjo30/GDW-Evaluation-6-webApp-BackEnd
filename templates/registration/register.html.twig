@@ -2,16 +2,39 @@
 
 {% block title %}Register{% endblock %}
 
-{% block body %}
-    <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.plainPassword, {
-        label: 'Password'
-    }) }}
-    {{ form_row(registrationForm.agreeTerms) }}
+    {% block body %}
+        <div class="banner d-flex justify-content-center align-items-center flex-column">
+            <h1 class="text-center text-capitalize text-white font-monospace mb-5">Enregistrer un nouveau
+                consultant</h1>
 
-    <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
-{% endblock %}
+            <div class="row">
+                <div class="col d-flex justify-content-between flex-column align-items-center">
+                    {{ form_start(registrationForm) }}
+                    <div class="row text-white font-monospace mb-3">
+                        {{ form_label(registrationForm.email) }}
+                        {{ form_widget(registrationForm.email) }}
+                    </div>
+                    <div class="row text-white font-monospace mb-3">
+                        {{ form_label(registrationForm.plainPassword) }}
+                        {{ form_widget(registrationForm.plainPassword) }}
+                    </div>
+                    <div class="row text-white font-monospace mb-3">
+
+                        <div class="col d-flex justify-content-between">
+                            {{ form_label(registrationForm.agreeTerms) }}
+                            {{ form_widget(registrationForm.agreeTerms) }}
+                        </div>
+
+                    </div>
+
+
+                    <button type="submit" class=" col-12  btn btn-lg btn-outline-secondary text-white font-monospace">
+                        Ajouter
+                    </button>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
