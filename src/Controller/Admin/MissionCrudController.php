@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Mission;
+use App\Form\ContactType;
 use App\Form\TargetType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,9 +59,14 @@ class MissionCrudController extends AbstractCrudController
         yield TextareaField::new('description')->setColumns(6);
 
         // Affichage de la cible
-        yield FormField::addTab('La Cible');
+        yield FormField::addTab('Les Cibles');
         yield CollectionField::new('targets', 'Cible')
             ->setEntryType(TargetType::class);
+
+        // Affichage du contact
+        yield FormField::addTab('Les Contacts');
+        yield CollectionField::new('contacts', 'Contact')
+            ->setEntryType(ContactType::class);
 
 
     }

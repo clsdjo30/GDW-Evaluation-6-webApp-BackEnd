@@ -34,11 +34,15 @@ class Country implements Stringable
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: Target::class)]
     private Collection $targets;
 
+    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Contact::class)]
+    private Collection $contacts;
+
 
     public function __construct()
     {
         $this->mission_country = new ArrayCollection();
         $this->targets = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +133,36 @@ class Country implements Stringable
             // set the owning side to null (unless already changed)
             if ($target->getCountry() === $this) {
                 $target->setCountry(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+            $contact->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getCountry() === $this) {
+                $contact->setCountry(null);
             }
         }
 
