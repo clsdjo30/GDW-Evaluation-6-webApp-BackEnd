@@ -40,6 +40,9 @@ class Country implements Stringable
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: Agent::class)]
     private Collection $agents;
 
+    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Hideout::class)]
+    private Collection $hideouts;
+
 
     public function __construct()
     {
@@ -47,6 +50,7 @@ class Country implements Stringable
         $this->targets = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->agents = new ArrayCollection();
+        $this->hideouts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,6 +201,36 @@ class Country implements Stringable
             // set the owning side to null (unless already changed)
             if ($agent->getCountry() === $this) {
                 $agent->setCountry(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hideout>
+     */
+    public function getHideouts(): Collection
+    {
+        return $this->hideouts;
+    }
+
+    public function addHideout(Hideout $hideout): self
+    {
+        if (!$this->hideouts->contains($hideout)) {
+            $this->hideouts[] = $hideout;
+            $hideout->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHideout(Hideout $hideout): self
+    {
+        if ($this->hideouts->removeElement($hideout)) {
+            // set the owning side to null (unless already changed)
+            if ($hideout->getCountry() === $this) {
+                $hideout->setCountry(null);
             }
         }
 

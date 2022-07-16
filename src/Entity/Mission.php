@@ -70,11 +70,15 @@ class Mission implements Stringable
     #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Agent::class, cascade: ['persist', 'remove'])]
     private Collection $agents;
 
+    #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Hideout::class, cascade: ['persist', 'remove'])]
+    private Collection $hideout;
+
     public function __construct()
     {
         $this->targets = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->agents = new ArrayCollection();
+        $this->hideout = new ArrayCollection();
     }
 
 
@@ -250,6 +254,36 @@ class Mission implements Stringable
             // set the owning side to null (unless already changed)
             if ($agent->getMission() === $this) {
                 $agent->setMission(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hideout>
+     */
+    public function getHideout(): Collection
+    {
+        return $this->hideout;
+    }
+
+    public function addHideout(Hideout $hideout): self
+    {
+        if (!$this->hideout->contains($hideout)) {
+            $this->hideout[] = $hideout;
+            $hideout->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHideout(Hideout $hideout): self
+    {
+        if ($this->hideout->removeElement($hideout)) {
+            // set the owning side to null (unless already changed)
+            if ($hideout->getMission() === $this) {
+                $hideout->setMission(null);
             }
         }
 

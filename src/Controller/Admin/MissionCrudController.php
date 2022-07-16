@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Mission;
 use App\Form\AgentType;
 use App\Form\ContactType;
+use App\Form\HideoutType;
 use App\Form\TargetType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -74,6 +75,10 @@ class MissionCrudController extends AbstractCrudController
         yield CollectionField::new('agents', 'Agents')
             ->setEntryType(AgentType::class);
 
+        // Affichage des Planques
+        yield FormField::addTab('Les Planques');
+        yield CollectionField::new('hideout', 'Agents')
+            ->setEntryType(HideoutType::class);
 
     }
 
