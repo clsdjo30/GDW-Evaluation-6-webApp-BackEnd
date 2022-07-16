@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Mission;
+use App\Form\AgentType;
 use App\Form\ContactType;
 use App\Form\TargetType;
 use DateTime;
@@ -67,6 +68,11 @@ class MissionCrudController extends AbstractCrudController
         yield FormField::addTab('Les Contacts');
         yield CollectionField::new('contacts', 'Contact')
             ->setEntryType(ContactType::class);
+
+        // Affichage des Agents
+        yield FormField::addTab('Les Agents');
+        yield CollectionField::new('agents', 'Agents')
+            ->setEntryType(AgentType::class);
 
 
     }

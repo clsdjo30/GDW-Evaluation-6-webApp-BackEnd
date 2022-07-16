@@ -67,10 +67,14 @@ class Mission implements Stringable
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'missions', cascade: ['persist', 'remove'])]
     private Collection $contacts;
 
+    #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Agent::class, cascade: ['persist', 'remove'])]
+    private Collection $agents;
+
     public function __construct()
     {
         $this->targets = new ArrayCollection();
         $this->contacts = new ArrayCollection();
+        $this->agents = new ArrayCollection();
     }
 
 
@@ -218,6 +222,36 @@ class Mission implements Stringable
     public function removeContact(Contact $contact): self
     {
         $this->contacts->removeElement($contact);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Agent>
+     */
+    public function getAgents(): Collection
+    {
+        return $this->agents;
+    }
+
+    public function addAgent(Agent $agent): self
+    {
+        if (!$this->agents->contains($agent)) {
+            $this->agents[] = $agent;
+            $agent->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgent(Agent $agent): self
+    {
+        if ($this->agents->removeElement($agent)) {
+            // set the owning side to null (unless already changed)
+            if ($agent->getMission() === $this) {
+                $agent->setMission(null);
+            }
+        }
 
         return $this;
     }
