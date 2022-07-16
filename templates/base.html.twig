@@ -11,13 +11,17 @@
         {% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+       {% endblock %}
 
     </head>
     <body>
-        {% block body %}
-            {% include  'partials/_header.html.twig' %}
-        {% endblock %}
+    {% block body %}
+        {% include('partials/_hero.html.twig') %}
+        {% block content %}{% endblock %}
+        {% include('partials/_header.html.twig') %}
+    {% endblock %}
+
+
     </body>
 
 
