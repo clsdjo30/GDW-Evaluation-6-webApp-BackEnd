@@ -1,15 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Ajouter un nouveau consultant{% endblock %}
 
 
     {% block body %}
+
         <div class="banner d-flex justify-content-center align-items-center flex-column">
             <h1 class="text-center text-capitalize text-white font-monospace mb-5">Enregistrer un nouveau
                 consultant</h1>
 
             <div class="row">
                 <div class="col d-flex justify-content-between flex-column align-items-center">
+
                     {{ form_start(registrationForm) }}
                     <div class="row text-white font-monospace mb-3">
                         {{ form_label(registrationForm.email) }}
