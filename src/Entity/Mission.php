@@ -4,11 +4,14 @@ namespace App\Entity;
 
 use App\Repository\MissionRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionRepository::class)]
-class Mission
+class Mission implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -57,6 +60,15 @@ class Mission
     #[ORM\ManyToOne(targetEntity: Skill::class, cascade: ['persist', 'remove'], inversedBy: 'mission_types')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Skill $type;
+
+    #[ORM\OneToMany(mappedBy: 'mission_id', targetEntity: Target::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $targets;
+
+    public function __construct()
+    {
+        $this->targets = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -143,6 +155,41 @@ class Mission
     public function setType(?Skill $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return Collection<int, Target>
+     */
+    public function getTargets(): Collection
+    {
+        return $this->targets;
+    }
+
+    public function addTarget(Target $target): self
+    {
+        if (!$this->targets->contains($target)) {
+            $this->targets[] = $target;
+            $target->setMissionId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTarget(Target $target): self
+    {
+        if ($this->targets->removeElement($target)) {
+            // set the owning side to null (unless already changed)
+            if ($target->getMissionId() === $this) {
+                $target->setMissionId(null);
+            }
+        }
 
         return $this;
     }
