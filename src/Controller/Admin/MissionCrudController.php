@@ -3,11 +3,16 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Mission;
+use App\Form\AgentType;
+use App\Form\ContactType;
+use App\Form\HideoutType;
+use App\Form\TargetType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -49,12 +54,31 @@ class MissionCrudController extends AbstractCrudController
         yield DateField::new('startAt', 'Débute le:')
             ->renderAsChoice(false)
             ->setColumns(3);
-
-
+        yield DateField::new('endAt', 'Termine le:')
+            ->renderAsChoice(false)
+            ->setColumns(3);
         yield AssociationField::new('country', 'Pays de mission');
-
         yield TextareaField::new('description')->setColumns(6);
 
+        // Affichage de la cible
+        yield FormField::addTab('Les Cibles');
+        yield CollectionField::new('targets', 'Cible')
+            ->setEntryType(TargetType::class);
+
+        // Affichage du contact
+        yield FormField::addTab('Les Contacts');
+        yield CollectionField::new('contacts', 'Contact')
+            ->setEntryType(ContactType::class);
+
+        // Affichage des Agents
+        yield FormField::addTab('Les Agents');
+        yield CollectionField::new('agents', 'Agents')
+            ->setEntryType(AgentType::class);
+
+        // Affichage des Planques
+        yield FormField::addTab('Les Planques');
+        yield CollectionField::new('hideout', 'Agents')
+            ->setEntryType(HideoutType::class);
 
     }
 

@@ -4,11 +4,14 @@ namespace App\Entity;
 
 use App\Repository\MissionRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionRepository::class)]
-class Mission
+class Mission implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -57,6 +60,27 @@ class Mission
     #[ORM\ManyToOne(targetEntity: Skill::class, cascade: ['persist', 'remove'], inversedBy: 'mission_types')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Skill $type;
+
+    #[ORM\OneToMany(mappedBy: 'mission_id', targetEntity: Target::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $targets;
+
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'missions', cascade: ['persist', 'remove'])]
+    private Collection $contacts;
+
+    #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Agent::class, cascade: ['persist', 'remove'])]
+    private Collection $agents;
+
+    #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Hideout::class, cascade: ['persist', 'remove'])]
+    private Collection $hideout;
+
+    public function __construct()
+    {
+        $this->targets = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
+        $this->agents = new ArrayCollection();
+        $this->hideout = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -143,6 +167,125 @@ class Mission
     public function setType(?Skill $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return Collection<int, Target>
+     */
+    public function getTargets(): Collection
+    {
+        return $this->targets;
+    }
+
+    public function addTarget(Target $target): self
+    {
+        if (!$this->targets->contains($target)) {
+            $this->targets[] = $target;
+            $target->setMissionId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTarget(Target $target): self
+    {
+        if ($this->targets->removeElement($target)) {
+            // set the owning side to null (unless already changed)
+            if ($target->getMissionId() === $this) {
+                $target->setMissionId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        $this->contacts->removeElement($contact);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Agent>
+     */
+    public function getAgents(): Collection
+    {
+        return $this->agents;
+    }
+
+    public function addAgent(Agent $agent): self
+    {
+        if (!$this->agents->contains($agent)) {
+            $this->agents[] = $agent;
+            $agent->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgent(Agent $agent): self
+    {
+        if ($this->agents->removeElement($agent)) {
+            // set the owning side to null (unless already changed)
+            if ($agent->getMission() === $this) {
+                $agent->setMission(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hideout>
+     */
+    public function getHideout(): Collection
+    {
+        return $this->hideout;
+    }
+
+    public function addHideout(Hideout $hideout): self
+    {
+        if (!$this->hideout->contains($hideout)) {
+            $this->hideout[] = $hideout;
+            $hideout->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHideout(Hideout $hideout): self
+    {
+        if ($this->hideout->removeElement($hideout)) {
+            // set the owning side to null (unless already changed)
+            if ($hideout->getMission() === $this) {
+                $hideout->setMission(null);
+            }
+        }
 
         return $this;
     }
