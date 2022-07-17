@@ -13,13 +13,13 @@ class Statute implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column()]
+    #[ORM\Column(type: 'integer')]
     private ?int $id;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'status', targetEntity: Mission::class)]
+    #[ORM\OneToMany(mappedBy: 'status', targetEntity: Mission::class, orphanRemoval: true)]
     private Collection $missions;
 
     public function __construct()
