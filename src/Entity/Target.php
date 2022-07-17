@@ -32,7 +32,7 @@ class Target
     private ?Country $country = null;
 
     #[ORM\ManyToOne(inversedBy: 'targets')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Mission $mission_id = null;
 
     public function getId(): ?int

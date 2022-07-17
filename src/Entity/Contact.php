@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ContactRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
@@ -29,7 +31,11 @@ class Contact
     private ?Country $country = null;
 
     #[ORM\ManyToMany(targetEntity: Mission::class, mappedBy: 'contacts')]
-    private Collection $missions;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Collection $missions = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $birthday = null;
 
     public function __construct()
     {
@@ -112,6 +118,18 @@ class Contact
         if ($this->missions->removeElement($mission)) {
             $mission->removeContact($this);
         }
+
+        return $this;
+    }
+
+    public function getBirthday(): ?DateTimeInterface
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(DateTimeInterface $birthday): self
+    {
+        $this->birthday = $birthday;
 
         return $this;
     }

@@ -22,9 +22,13 @@ class Skill implements Stringable
     #[ORM\OneToMany(mappedBy: 'type', targetEntity: Mission::class, orphanRemoval: true)]
     private Collection $mission_types;
 
+    #[ORM\ManyToMany(targetEntity: Agent::class, mappedBy: 'skills')]
+    private Collection $agents;
+
     public function __construct()
     {
         $this->mission_types = new ArrayCollection();
+        $this->agents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,5 +81,32 @@ class Skill implements Stringable
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Agent>
+     */
+    public function getAgents(): Collection
+    {
+        return $this->agents;
+    }
+
+    public function addAgent(Agent $agent): self
+    {
+        if (!$this->agents->contains($agent)) {
+            $this->agents[] = $agent;
+            $agent->addSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgent(Agent $agent): self
+    {
+        if ($this->agents->removeElement($agent)) {
+            $agent->removeSkill($this);
+        }
+
+        return $this;
     }
 }

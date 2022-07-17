@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Country;
 use App\Entity\Mission;
 use App\Entity\Skill;
+use App\Entity\Statute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -25,9 +26,6 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $url = $this->adminUrlGenerator->setController(MissionCrudController::class)->generateUrl();
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
         return $this->redirect($url);
 
         // Option 2. You can make your dashboard redirect to different pages depending on the user
@@ -36,9 +34,6 @@ class DashboardController extends AbstractDashboardController
         //     return $this->redirect('...');
         // }
 
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
 
     }
 
@@ -67,7 +62,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Country::class)
                     ->setAction(Crud::PAGE_NEW),
             ]);
-
+        // Menu des Skill
         yield MenuItem::subMenu('Spécialités', 'fas fa-globe')
             ->setSubItems([
                 MenuItem::linkToCrud('Voir', 'fas fa-eye', Skill::class)
@@ -75,6 +70,14 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Skill::class)
                     ->setAction(Crud::PAGE_NEW),
             ]);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        // Menu des Status
+        yield MenuItem::subMenu('Status de mission', 'fas fa-globe')
+            ->setSubItems([
+                MenuItem::linkToCrud('Voir', 'fas fa-eye', Statute::class)
+                    ->setAction(Crud::PAGE_INDEX),
+                MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Statute::class)
+                    ->setAction(Crud::PAGE_NEW),
+            ]);
+
     }
 }
