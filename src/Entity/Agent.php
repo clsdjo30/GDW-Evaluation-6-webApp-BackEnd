@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\AgentRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,13 +29,21 @@ class Agent
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $birthday = null;
 
-    #[ORM\ManyToOne(inversedBy: 'agents')]
+    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'agents')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Country $country = null;
 
-    #[ORM\ManyToOne(inversedBy: 'agents')]
+    #[ORM\ManyToOne(targetEntity: Mission::class, cascade: ['persist', 'remove'], inversedBy: 'agents')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Mission $mission = null;
+
+    #[ORM\ManyToMany(targetEntity: Skill::class, inversedBy: 'agents')]
+    private Collection $skills;
+
+    public function __construct()
+    {
+        $this->skills = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,6 +118,30 @@ class Agent
     public function setMission(?Mission $mission): self
     {
         $this->mission = $mission;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Skill>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skill $skill): self
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skill $skill): self
+    {
+        $this->skills->removeElement($skill);
 
         return $this;
     }

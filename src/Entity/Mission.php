@@ -73,6 +73,10 @@ class Mission implements Stringable
     #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Hideout::class, cascade: ['persist', 'remove'])]
     private Collection $hideout;
 
+    #[ORM\ManyToOne(targetEntity: Statute::class, cascade: ['persist', 'remove'], inversedBy: 'missions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Statute $status = null;
+
     public function __construct()
     {
         $this->targets = new ArrayCollection();
@@ -286,6 +290,18 @@ class Mission implements Stringable
                 $hideout->setMission(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?Statute
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Statute $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

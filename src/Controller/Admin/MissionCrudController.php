@@ -49,15 +49,16 @@ class MissionCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnIndex()->hideOnForm();
         yield TextField::new('title', 'Titre de mission')->setColumns(6);
         yield TextField::new('code_name', 'Nom de Code')->setColumns(6);
-
         yield AssociationField::new('type', 'Type de mission')->setColumns(6);
+        yield AssociationField::new('country', 'Pays de mission');
         yield DateField::new('startAt', 'Débute le:')
             ->renderAsChoice(false)
-            ->setColumns(3);
+            ->setColumns(4);
         yield DateField::new('endAt', 'Termine le:')
             ->renderAsChoice(false)
-            ->setColumns(3);
-        yield AssociationField::new('country', 'Pays de mission');
+            ->setColumns(4);
+        yield AssociationField::new('status', 'Statut')
+            ->setColumns(4);
         yield TextareaField::new('description')->setColumns(6);
 
         // Affichage de la cible
@@ -77,8 +78,9 @@ class MissionCrudController extends AbstractCrudController
 
         // Affichage des Planques
         yield FormField::addTab('Les Planques');
-        yield CollectionField::new('hideout', 'Agents')
+        yield CollectionField::new('hideout', 'Planques')
             ->setEntryType(HideoutType::class);
+
 
     }
 
