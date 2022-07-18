@@ -38,5 +38,6 @@ final class Version20220716114700 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE agent');
+        $this->addSql('DROP TABLE agent_skill');
     }
 }
