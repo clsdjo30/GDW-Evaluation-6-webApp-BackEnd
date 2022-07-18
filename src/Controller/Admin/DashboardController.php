@@ -6,6 +6,7 @@ use App\Entity\Country;
 use App\Entity\Mission;
 use App\Entity\Skill;
 use App\Entity\Statute;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -23,6 +24,7 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin', name: 'admin')]
+    #[Route('/consultant', name: 'consultant')]
     public function index(): Response
     {
         $url = $this->adminUrlGenerator->setController(MissionCrudController::class)->generateUrl();
@@ -45,7 +47,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToRoute('Revenir au site', 'fas fa-home', 'app_home');
         yield MenuItem::subMenu('Missions', 'fas fa-envelope-open-text')
             ->setSubItems([
                 MenuItem::linkToCrud('Voir', 'fas fa-eye', Mission::class)
@@ -54,6 +56,14 @@ class DashboardController extends AbstractDashboardController
                     ->setAction(Crud::PAGE_NEW)
             ]);
 
+        // Menu des Consultant
+        yield MenuItem::subMenu('Consultant', 'fas fa-globe')
+            ->setSubItems([
+                MenuItem::linkToCrud('Voir', 'fas fa-eye', User::class)
+                    ->setAction(Crud::PAGE_INDEX),
+                MenuItem::linkToCrud('Ajouter', 'fas fa-plus', User::class)
+                    ->setAction(Crud::PAGE_NEW),
+            ]);
         // Menu des Pays
         yield MenuItem::subMenu('Pays', 'fas fa-globe')
             ->setSubItems([

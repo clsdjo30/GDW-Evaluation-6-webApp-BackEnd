@@ -7,23 +7,18 @@
                     class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse justify-content-evenly" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
+                <li class="nav-item active me-5">
                     <a class="nav-link font-monospace fw-lighter fs-5" href="{{ path('app_mission') }}">Nos Missions</a>
                 </li>
 
 
-                {% if is_granted('ROLE_USER') %}
-
-                    <li class="nav-item" href="#">
-                        <a class="nav-link font-body fw-lighter fs-6 ">Vous êtes connecté en tant que
-                            : {{ app.user.email|lower }}</a>
-
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item me-5">
+                        <a class="nav-link font-monospace text-danger fw-lighter fs-5" href="{{ path('app_logout') }}">Déconnexion</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link font-body fw-lighter fs-6 text-danger" href="{{ path('app_logout') }}">Déconnexion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link font-monospace fw-lighter fs-5" href="{{ path('app_register') }}">S'enregistrer</a>
+                    <li class="nav-item me-5" href="#">
+                        <a class="nav-link font-monospace text-info fw-lighter fs-5" href="{{ path('admin') }}">Revenir
+                            à l'administration</a>
                     </li>
 
                 {% else %}
