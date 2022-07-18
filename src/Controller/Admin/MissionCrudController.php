@@ -64,22 +64,26 @@ class MissionCrudController extends AbstractCrudController
         // Affichage de la cible
         yield FormField::addTab('Les Cibles');
         yield CollectionField::new('targets', 'Cible')
-            ->setEntryType(TargetType::class);
+            ->setEntryType(TargetType::class)
+            ->setRequired(true);
 
         // Affichage du contact
         yield FormField::addTab('Les Contacts');
         yield CollectionField::new('contacts', 'Contact')
-            ->setEntryType(ContactType::class);
+            ->setEntryType(ContactType::class)
+            ->setRequired(true);
 
         // Affichage des Agents
         yield FormField::addTab('Les Agents');
         yield CollectionField::new('agents', 'Agents')
-            ->setEntryType(AgentType::class);
+            ->setEntryType(AgentType::class)
+            ->setRequired(true);
 
         // Affichage des Planques
         yield FormField::addTab('Les Planques');
         yield CollectionField::new('hideout', 'Planques')
-            ->setEntryType(HideoutType::class);
+            ->setEntryType(HideoutType::class)
+            ->setRequired(false);
 
 
     }
