@@ -3,51 +3,28 @@
         <h1 class="display-4  text-center text-light pt-1 pb-2">Les Dernieres Missions</h1>
 
         <div class="row">
-            {% for mission in missions  %}
+            {% for mission in missions %}
 
                 <div class="col-md-6 opacity-50 ">
                     <div class="shadow-card row g-0 rounded bg-secondary overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <div class="col p-4 d-flex flex-column position-static">
-                            <h3 class="mb-0 text-light"> {# {{ mission.title } #}</h3>
-                            <p class=" mb-0 mt-1 text-danger "><strong>{# {{ mission.status }} #}</strong></p>
+                            <h3 class="mb-0 text-light">  {{ mission.title }}</h3>
+                            <p class=" mb-0 mt-1 text-danger "><strong> {{ mission.status }} </strong></p>
 
                             <div class="d-flex justify-content-between">
-                                <p class="mb-0 text-dark">Début :  {# {{ mission.startAt | date('d-m-Y') } #} </p>
-                                <p class="mb-0 text-dark">Fin :  {# {{ mission.EndAt | date('d-m-Y') } #} </p>
+                                <p class="mb-0 text-dark">Début : {{ mission.startAt | date('d-m-Y') }} </p>
+                                <p class="mb-0 text-dark">Fin : {{ mission.EndAt | date('d-m-Y') }} </p>
                             </div>
                             <hr>
-                            <p class="card-text mb-auto text-light">{#  {{ mission.description | u.truncate(100, '...', true) }}#} </p>
+                            <p class="card-text mb-auto text-light">{{ mission.description | u.truncate(100, '...', true) }} </p>
                             <hr>
                             <div class="d-flex justify-content-between">
-                                <p class="card-text mb-auto text-warning "><strong>{#  {{ mission.type}}#} </strong> </p>
-                                <a href=" {#{{ path('app_mission_show', {'id': mission.id}) }} #} "
+                                <p class="card-text mb-auto text-warning "><strong>  {{ mission.type }} </strong></p>
+                                <a href=" {{ path('mission_show', {id: mission.id }) }} "
                                    class="btn btn-outline-dark">Lire plus</a>
                             </div>
                         </div>
 
-                        {# <div class="col-auto">
-                            <svg class="bd-placeholder-img"
-                                 width="200"
-                                 height="300"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 role="img"
-                                 aria-label="Placeholder: Thumbnail"
-                                 preserveAspectRatio="xMidYMid slice"
-                                 focusable="false">
-                                <title>Placeholder</title>
-                                <rect
-                                        width="100%"
-                                        height="100%"
-                                        fill="#55595c"/>
-                                <text
-                                        x="30%"
-                                        y="50%"
-                                        fill="#eceeef"
-                                        dy=".3em">
-                                    Thumbnail
-                                </text>
-                            </svg>
-                        </div> #}
                     </div>
                 </div>
 
@@ -55,7 +32,7 @@
         </div>
 
         <div class="mb-5">
-           {#  {{ knp_pagination_render(missions, 'partials/_pagination.html.twig')  #}}
+            {{ knp_pagination_render(missions, 'partials/_pagination.html.twig') }}
         </div>
     </div>
 
