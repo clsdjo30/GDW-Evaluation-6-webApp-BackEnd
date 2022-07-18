@@ -37,7 +37,7 @@ class Agent
     #[ORM\JoinColumn(nullable: false)]
     private ?Mission $mission = null;
 
-    #[ORM\ManyToMany(targetEntity: Skill::class, inversedBy: 'agents')]
+    #[ORM\ManyToMany(targetEntity: Skill::class, inversedBy: 'agents', cascade: ['persist', 'remove'])]
     private Collection $skills;
 
     public function __construct()

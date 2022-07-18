@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\TargetRepository;
 use DateTimeInterface;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TargetRepository::class)]
@@ -13,27 +12,27 @@ class Target
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private ?int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $firstname = null;
+    private ?string $firstname;
 
     #[ORM\Column(length: 255)]
-    private ?string $lastname = null;
+    private ?string $lastname;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $birthday = null;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $birthday;
 
     #[ORM\Column(length: 255)]
-    private ?string $code_name = null;
+    private ?string $code_name;
 
     #[ORM\ManyToOne(inversedBy: 'targets')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Country $country = null;
+    private ?Country $country;
 
     #[ORM\ManyToOne(inversedBy: 'targets')]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Mission $mission_id = null;
+    private ?Mission $mission_id;
 
     public function getId(): ?int
     {
