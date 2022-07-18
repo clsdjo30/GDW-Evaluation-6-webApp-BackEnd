@@ -24,19 +24,17 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin', name: 'admin')]
-    #[Route('/consultant', name: 'consultant')]
     public function index(): Response
     {
         $url = $this->adminUrlGenerator->setController(MissionCrudController::class)->generateUrl();
         return $this->redirect($url);
+    }
 
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-
+    #[Route('/consultant', name: 'consultant')]
+    public function homeDashboard(): Response
+    {
+        $url = $this->adminUrlGenerator->setController(MissionCrudController::class)->generateUrl();
+        return $this->redirect($url);
     }
 
     public function configureDashboard(): Dashboard
@@ -48,21 +46,23 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToRoute('Revenir au site', 'fas fa-home', 'app_home');
+        // Menu des Consultant
+        if ($this->isGranted('ROLE_ADMIN')) {
+            yield MenuItem::linkToRoute('Ajouter un Consultant', 'fas fa-plus', 'app_register');
+            yield MenuItem::subMenu('Consultant', 'fas fa-user')
+                ->setSubItems([
+                    MenuItem::linkToCrud('Voir', 'fas fa-eye', User::class)
+                        ->setAction(Crud::PAGE_INDEX)
+                ]);
+        }
+
+
         yield MenuItem::subMenu('Missions', 'fas fa-envelope-open-text')
             ->setSubItems([
                 MenuItem::linkToCrud('Voir', 'fas fa-eye', Mission::class)
                     ->setAction(Crud::PAGE_INDEX),
                 MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Mission::class)
                     ->setAction(Crud::PAGE_NEW)
-            ]);
-
-        // Menu des Consultant
-        yield MenuItem::subMenu('Consultant', 'fas fa-globe')
-            ->setSubItems([
-                MenuItem::linkToCrud('Voir', 'fas fa-eye', User::class)
-                    ->setAction(Crud::PAGE_INDEX),
-                MenuItem::linkToCrud('Ajouter', 'fas fa-plus', User::class)
-                    ->setAction(Crud::PAGE_NEW),
             ]);
         // Menu des Pays
         yield MenuItem::subMenu('Pays', 'fas fa-globe')
