@@ -28,19 +28,40 @@ class Country implements Stringable
     #[Assert\Length(min: 5)]
     private ?string $nationality;
 
-    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Mission::class, orphanRemoval: true)]
+    #[ORM\OneToMany(
+        mappedBy: 'country',
+        targetEntity: Mission::class,
+        orphanRemoval: true)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $mission_country;
 
-    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Target::class)]
+    #[ORM\OneToMany(
+        mappedBy: 'country',
+        targetEntity: Target::class)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $targets;
 
-    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Contact::class)]
+    #[ORM\OneToMany(
+        mappedBy: 'country',
+        targetEntity: Contact::class)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $contacts;
 
-    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Agent::class)]
+    #[ORM\OneToMany(
+        mappedBy: 'country',
+        targetEntity: Agent::class)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $agents;
 
-    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Hideout::class)]
+    #[ORM\OneToMany(
+        mappedBy: 'country',
+        targetEntity: Hideout::class)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $hideouts;
 
 

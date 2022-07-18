@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\HideoutRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: HideoutRepository::class)]
 class Hideout
@@ -14,17 +16,39 @@ class Hideout
     private ?int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $code = null;
+    #[Assert\Type("string")]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 30,
+        minMessage: 'Le code doit contenir au moins 5 caractères',
+        maxMessage: 'le code est trop long')]
+    private ?string $code;
 
     #[ORM\Column(length: 255)]
-    private ?string $address = null;
+    #[Assert\Type("string")]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 150,
+        minMessage: "L'adresse doit contenir au moins 5 caractères",
+        maxMessage: "l'adresse est trop longue")]
+    private ?string $address;
 
-    #[ORM\ManyToOne(inversedBy: 'hideouts')]
+    #[ORM\ManyToOne(
+        targetEntity: Country::class,
+        inversedBy: 'hideouts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Country $country = null;
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
+    private ?Country $country;
 
-    #[ORM\ManyToOne(inversedBy: 'hideout')]
-    private ?Mission $mission = null;
+    #[ORM\ManyToOne(
+        targetEntity: Mission::class,
+        inversedBy: 'hideout')]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
+    private ?Mission $mission;
 
     public function getId(): ?int
     {

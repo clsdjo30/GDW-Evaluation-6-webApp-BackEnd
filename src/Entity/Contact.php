@@ -6,36 +6,59 @@ use App\Repository\ContactRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column()]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $firstname = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 50,
+        minMessage: 'Votre prénom est trop court',
+        maxMessage: 'Votre prénom est trop long')]
+    private ?string $firstname;
 
     #[ORM\Column(length: 255)]
-    private ?string $lastname = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 50,
+        minMessage: 'Votre nom est trop court',
+        maxMessage: 'Votre nom est trop long')]
+    private ?string $lastname;
 
     #[ORM\Column(length: 255)]
-    private ?string $code_name = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 20,
+        minMessage: 'Votre nom de code est trop court',
+        maxMessage: 'Votre nom de code est trop long')]
+    private ?string $code_name;
 
-    #[ORM\ManyToOne(inversedBy: 'contacts')]
+    #[ORM\ManyToOne(
+        targetEntity: Country::class,
+        inversedBy: 'contacts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Country $country = null;
 
-    #[ORM\ManyToMany(targetEntity: Mission::class, mappedBy: 'contacts')]
+    #[ORM\ManyToMany(
+        targetEntity: Mission::class,
+        mappedBy: 'contacts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Collection $missions = null;
+    private ?Collection $missions;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $birthday = null;
+    #[ORM\Column(type: 'datetime')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?DateTimeInterface $birthday;
 
     public function __construct()
     {

@@ -6,6 +6,7 @@ use App\Entity\Contact;
 use App\Entity\Country;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,6 +24,10 @@ class ContactType extends AbstractType
             ])
             ->add('code_name', TextType::class, [
                 'label' => 'Alias'
+            ])
+            ->add('birthday', DateType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date de naissance'
             ])
             ->add('country', EntityType::class, [
                 'class' => Country::class,

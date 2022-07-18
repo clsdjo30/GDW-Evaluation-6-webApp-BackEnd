@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: SkillRepository::class)]
 class Skill implements Stringable
@@ -17,12 +19,23 @@ class Skill implements Stringable
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5)]
     private ?string $name;
 
-    #[ORM\OneToMany(mappedBy: 'type', targetEntity: Mission::class, orphanRemoval: true)]
+    #[ORM\OneToMany(
+        mappedBy: 'type',
+        targetEntity: Mission::class,
+        orphanRemoval: true)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $mission_types;
 
-    #[ORM\ManyToMany(targetEntity: Agent::class, mappedBy: 'skills')]
+    #[ORM\ManyToMany(
+        targetEntity: Agent::class,
+        mappedBy: 'skills')]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $agents;
 
     public function __construct()

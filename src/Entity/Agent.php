@@ -6,38 +6,66 @@ use App\Repository\AgentRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AgentRepository::class)]
 class Agent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column()]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $firstname = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 30,
+        minMessage: "Le prénom de l'agent doit contenir au moins 5 caractères",
+        maxMessage: "le prénom de l'agent est trop long")]
+    private ?string $firstname;
 
     #[ORM\Column(length: 255)]
-    private ?string $lastname = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 30,
+        minMessage: "Le nom de l'agent doit contenir au moins 5 caractères",
+        maxMessage: "le nom de l'agent est trop long")]
+    private ?string $lastname;
 
     #[ORM\Column(length: 255)]
-    private ?string $code_name = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 30,
+        minMessage: "Le nom de code de l'agent doit contenir au moins 5 caractères",
+        maxMessage: "le nom de code de l'agent est trop long")]
+    private ?string $code_name;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $birthday = null;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $birthday;
 
-    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'agents')]
+    #[ORM\ManyToOne(
+        targetEntity: Country::class,
+        inversedBy: 'agents')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Country $country = null;
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
+    private ?Country $country;
 
-    #[ORM\ManyToOne(targetEntity: Mission::class, cascade: ['persist', 'remove'], inversedBy: 'agents')]
+    #[ORM\ManyToOne(
+        targetEntity: Mission::class,
+        cascade: ['persist', 'remove'],
+        inversedBy: 'agents')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Mission $mission = null;
+    private ?Mission $mission;
 
-    #[ORM\ManyToMany(targetEntity: Skill::class, inversedBy: 'agents', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(
+        targetEntity: Skill::class,
+        inversedBy: 'agents',
+        cascade: ['persist', 'remove'])]
     private Collection $skills;
 
     public function __construct()

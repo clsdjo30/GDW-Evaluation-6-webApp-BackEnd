@@ -53,29 +53,65 @@ class Mission implements Stringable
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeInterface $endAt;
 
-    #[ORM\ManyToOne(targetEntity: Country::class, cascade: ['persist', 'remove'], inversedBy: 'mission_country')]
+    #[ORM\ManyToOne(
+        targetEntity: Country::class,
+        cascade: ['persist', 'remove'],
+        inversedBy: 'mission_country')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private ?Country $country;
 
-    #[ORM\ManyToOne(targetEntity: Skill::class, cascade: ['persist', 'remove'], inversedBy: 'mission_types')]
+    #[ORM\ManyToOne(
+        targetEntity: Skill::class,
+        cascade: ['persist', 'remove'],
+        inversedBy: 'mission_types')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private ?Skill $type;
 
-    #[ORM\OneToMany(mappedBy: 'mission_id', targetEntity: Target::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(
+        mappedBy: 'mission_id',
+        targetEntity: Target::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $targets;
 
-    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'missions', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(
+        targetEntity: Contact::class,
+        inversedBy: 'missions',
+        cascade: ['persist', 'remove'])]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $contacts;
 
-    #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Agent::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(
+        mappedBy: 'mission',
+        targetEntity: Agent::class,
+        cascade: ['persist', 'remove'])]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private Collection $agents;
 
-    #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Hideout::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(
+        mappedBy: 'mission',
+        targetEntity: Hideout::class,
+        cascade: ['persist', 'remove'])]
+    #[Assert\Type("object")]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $hideout;
 
-    #[ORM\ManyToOne(targetEntity: Statute::class, cascade: ['persist', 'remove'], inversedBy: 'missions')]
+    #[ORM\ManyToOne(
+        targetEntity: Statute::class,
+        cascade: ['persist', 'remove'],
+        inversedBy: 'missions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Statute $status = null;
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
+    private ?Statute $status;
 
     public function __construct()
     {

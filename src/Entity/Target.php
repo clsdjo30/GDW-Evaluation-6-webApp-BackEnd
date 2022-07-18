@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\TargetRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: TargetRepository::class)]
 class Target
@@ -15,23 +17,49 @@ class Target
     private ?int $id;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 30,
+        minMessage: 'Le prénom de la cible doit contenir au moins 5 caractères',
+        maxMessage: 'le prénom de la cible est trop long')]
     private ?string $firstname;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 30,
+        minMessage: 'Le nom de la cible doit contenir au moins 5 caractères',
+        maxMessage: 'le nom de la cible est trop long')]
     private ?string $lastname;
 
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $birthday;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 30,
+        minMessage: 'Le nom de code de la cible doit contenir au moins 5 caractères',
+        maxMessage: 'le nom de code de la cible est trop long')]
     private ?string $code_name;
 
-    #[ORM\ManyToOne(inversedBy: 'targets')]
+    #[ORM\ManyToOne(
+        targetEntity: Country::class,
+        inversedBy: 'targets')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private ?Country $country;
 
-    #[ORM\ManyToOne(inversedBy: 'targets')]
+    #[ORM\ManyToOne(
+        targetEntity: Mission::class,
+        inversedBy: 'targets')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Assert\Type("object")]
+    #[Assert\NotBlank]
     private ?Mission $mission_id;
 
     public function getId(): ?int
