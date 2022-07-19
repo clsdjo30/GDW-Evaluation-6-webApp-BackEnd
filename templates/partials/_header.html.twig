@@ -7,36 +7,45 @@
                     class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse justify-content-evenly" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link font-monospace fw-lighter fs-5" href="#">Nos Missions</a>
+                <li class="nav-item active me-5">
+                    <a class="nav-link font-monospace fw-lighter fs-5" href="{{ path('app_mission') }}">Nos Missions</a>
                 </li>
-                <li class="nav-item"><a class="nav-link font-monospace fw-lighter fs-5" href="#">Contact</a></li>
 
-                {% if is_granted('ROLE_USER') %}
 
-                    <li class="nav-item" href="#">
-                        <a class="nav-link font-body fw-lighter fs-6 " href="#">Vous êtes connecté en tant que
-                            : {{ app.user.email|lower }}</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item me-5">
+                            <a class="nav-link font-monospace text-danger fw-lighter fs-5"
+                               href="{{ path('app_logout') }}">Déconnexion</a>
+                        </li>
+                        <li class="nav-item me-5" href="#">
+                            <a class="nav-link font-monospace text-info fw-lighter fs-5" href="{{ path('admin') }}">Revenir
+                                à l'administration</a>
+                        </li>
+                        <li class="nav-item me-5" href="#">
+                            <a class="nav-link font-monospace text-warning fw-lighter fs-5">{{ app.user.email }}</a>
+                        </li>
 
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link font-body fw-lighter fs-6 text-danger" href="{{ path('app_logout') }}">Déconnexion</a>
-                    </li>
+                    {% elseif is_granted('ROLE_CONSULTANT') %}
+                        <li class="nav-item me-5">
+                            <a class="nav-link font-monospace text-danger fw-lighter fs-5"
+                               href="{{ path('app_logout') }}">Déconnexion</a>
+                        </li>
+                        <li class="nav-item me-5" href="#">
+                            <a class="nav-link font-monospace text-info fw-lighter fs-5"
+                               href="{{ path('consultant') }}">Revenir
+                                à l'administration</a>
+                        </li>
+                        <li class="nav-item me-5" href="#">
+                            <a class="nav-link font-monospace text-warning fw-lighter fs-5">{{ app.user.email }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link font-monospace fw-lighter fs-5" href="{{ path('app_login') }}">Se
+                                connecter</a>
+                        </li>
 
-                {% else %}
-
-                    <li class="nav-item">
-                        <a class="nav-link font-monospace fw-lighter fs-5" href="{{ path('app_register') }}">S'enregistrer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link font-monospace fw-lighter fs-5" href="{{ path('app_login') }}">Se
-                            connecter</a>
-                    </li>
-
-                {% endif %}
+                    {% endif %}
             </ul>
-
         </div>
-
     </div>
 </nav>

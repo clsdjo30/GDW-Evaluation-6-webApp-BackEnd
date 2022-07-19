@@ -1,0 +1,126 @@
+{#  templates/admin/my-custom-page.html.twig #}
+    {% extends '@EasyAdmin/page/content.html.twig' %}
+
+    {% block content_title %}KGB - DASHBOARD{% endblock %}
+
+
+{% block main %}
+    <section class="row mt-1">
+        <h2 class="text-center display-5">Nos Missions</h2>
+        <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
+            <div class="col">
+                <div class="card rounded-3 shadow border-1 border-warning bg-transparent">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">En Préparation</h3>
+                        {% for mission in missionsInPreparation %}
+                            <p class="display-6 text-center text-warning">{{ mission.value }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card rounded-3 shadow border-1 border-info bg-transparent">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">En Cours</h3>
+                        {% for mission in missionsInProgress %}
+                            <p class="display-6 text-center text-info">{{ mission.value }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card rounded-3 shadow border-1 border-success bg-transparent">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Terminée</h3>
+                        {% for mission in missionsFinished %}
+                            <p class="display-6 text-center text-success">{{ mission.value }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card rounded-3 shadow border-1 border-danger bg-transparent">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Echouée</h3>
+                        {% for mission in missionsFailed %}
+                            <p class="display-6 text-center text-danger">{{ mission.value }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-1">
+            <div class="col-12 mt-4">
+                <div class="card shadow-lg border-1 rounded-3 border-1 border-dark  bg-transparent">
+                    <div class="card-body">
+                        <div class="col">
+                            {% for mission in totalMission %}
+                                {% for country in missionCountries %}
+                                    <h2 class="card-title text-center">Il y a actuellement {{ mission.value }} missions
+                                        reférencées sur le site, dans {{ country.value }} pays différents</h2>
+
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-2 mt-2">
+        <div class="row row-cols-2 row-cols-md-2 g-4 py-5">
+            <div class="col">
+                <div class="card shadow-lg border-1 rounded-3 border-1 border-dark  bg-transparent">
+                    <h5 class="text-center py-3">Les Missions Terminées</h5>
+                    <div class="card-body">
+                        <div class="col">
+                            <ul class="list-group-horizontal">
+                                {% for mission in missionsStatus %}
+                                    <li>
+                                        <p>
+                                            La mission <strong>{{ mission }}</strong> à été terminé le
+                                            <em>{{ mission.endAt | date('d-m-Y') }}</em>
+                                        </p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card rounded-3 shadow bg-transparent shadow-lg border-1 rounded-3 border-1 border-dark  bg-transparent">
+                    <h5 class="text-center py-3">Agents ayant Terminés leurs missions</h5>
+                    <div class="card-body col">
+                        <div class="col">
+                            {% for mission in missionsAgentActif %}
+                                <ul class=" list-group-horizontal">
+                                    <li>
+                                        <strong>{{ mission.fullname }}</strong> a terminé la mission : {{ mission }}
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card rounded-3 shadow bg-transparent shadow-lg border-1 rounded-3 border-1 border-dark  bg-transparent">
+                    <h5 class="text-center py-3">Cibles Eliminées</h5>
+                    <div class="card-body col">
+                        <div class="col">
+                            {% for target in targetKilled %}
+                                <ul class=" list-group-horizontal rounded-3">
+                                    <li>
+                                        {{ target }}
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

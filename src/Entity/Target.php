@@ -5,11 +5,12 @@ namespace App\Entity;
 use App\Repository\TargetRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: TargetRepository::class)]
-class Target
+class Target implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -137,5 +138,10 @@ class Target
         $this->mission_id = $mission_id;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return 'Pays : ' . $this->country . ' - Cible : ' . $this->firstname . ' ' . $this->lastname . ' - Code : ' . $this->code_name;
     }
 }

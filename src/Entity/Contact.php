@@ -7,10 +7,11 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
-class Contact
+class Contact implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -155,5 +156,15 @@ class Contact
         $this->birthday = $birthday;
 
         return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function __toString(): string
+    {
+        return 'Contact: ' . $this->getFullName() . ' - Pays : ' . $this->country;
     }
 }

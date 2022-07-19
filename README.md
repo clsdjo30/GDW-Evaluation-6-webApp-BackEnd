@@ -12,6 +12,7 @@
   - [Installation de Bootstrap](#installation-de-bootstrap)
   - [Ajout de Fontawesome](#ajout-de-fontawesome)
   - [Installation du bundle Paginator](#installation-du-bundle-paginator)
+  - [Installation du bundle Twig Extra](#installation-du-bundle-paginator)
   - [Installation des Datafixture et FakerPhp](#installation-des-datafixture-et-fakerphp)
   - [Installation du bundle EAsyadmin](#installation-du-bundle-easyadmin)
 - [Déploiement](#deployer-le-site-en-production-sur-heroku)
@@ -164,6 +165,13 @@ knp_paginator:
     {{ knp_pagination_render(pagination) }}
 </div>
 ````
+
+### Installation du bundle Twig Extra
+
+1. Installer le bundle  
+   ``composer require twig/string-extra``
+2. Utilisation pour couper un long texte  
+   ``{{ mission.description | u.truncate(100, '...', true) }}``
 
 ### Installation des Datafixture et FakerPhp
 
