@@ -401,10 +401,26 @@ class Mission implements Stringable
     /**
      * @return bool
      */
+    public function hideoutAndMissionCountryIsEqual(): bool
+    {
+        $missionCountry = $this->country;
+        $hideoutCountry = $this->hideout;
+
+        foreach ($hideoutCountry as $hideout) {
+            if ($missionCountry !== $hideout->getCountry()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
     #[ORM\PrePersist]
     public function missionIsValid(): bool
     {
-        return !(!$this->contactAndMissionNationalityIsEqual() || !$this->targetAndAgentAreDifferent());
+        return !(!$this->contactAndMissionNationalityIsEqual() || !$this->targetAndAgentAreDifferent() || !$this->agentHadMissionSkill() || !$this->hideoutAndMissionCountryIsEqual());
 
     }
 
