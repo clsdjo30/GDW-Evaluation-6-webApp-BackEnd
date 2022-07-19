@@ -48,8 +48,8 @@ mdp: password
 ### Screenshot
 
 [Mobile View](./overview/mobile-view.png)  
-[Desktop View](./overview/desktop-view.png)
-[Admin View](./overview/admin-view.png)
+[Desktop View](./overview/desktop-view.png)  
+[Admin View](./overview/admin-view.png)  
 [Mission Form View](./overview/desktop-form.png)
 
 ### Environnement de développement
