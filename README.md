@@ -31,10 +31,26 @@ Kgb est une application permettant :
 Le lien vers le depot [Github](https://github.com/clsdjo30/GDW-Evaluation-6-webApp-BackEnd).  
 Une demonstration du projet est disponible - [Korp General Business](https://gdw-kgb-consulting.herokuapp.com/)
 
+Pour tester l'application en Administrateur :
+
+````
+id : admin@kgb.com
+mdp: superpassword
+````
+
+Pour tester l'application en Consultant :
+
+````
+id : consultant@kgb.com
+mdp: password
+````
+
 ### Screenshot
 
 [Mobile View](./overview/mobile-view.png)  
-[Desktop View]()
+[Desktop View](./overview/desktop-view.png)
+[Admin View](./overview/admin-view.png)
+[Mission Form View](./overview/desktop-form.png)
 
 ### Environnement de développement
 
