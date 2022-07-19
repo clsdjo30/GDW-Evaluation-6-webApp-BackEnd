@@ -7,10 +7,11 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AgentRepository::class)]
-class Agent
+class Agent implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -172,5 +173,28 @@ class Agent
         $this->skills->removeElement($skill);
 
         return $this;
+    }
+
+    public function showSkills(): array
+    {
+        $agentSkills = $this->skills;
+        $listSkills = [];
+
+        foreach ($agentSkills as $agentSkill) {
+            $listSkills[] = $agentSkill->getName();
+        }
+        return $listSkills;
+    }
+
+    public function __toString(): string
+    {
+        $skills = $this->showSkills();
+
+        return 'Pays : ' . $this->country . ' - Agent : ' . $this->getFullname() . ' - Specialités : ' . implode(', ', $skills);
+    }
+
+    public function getFullname(): string
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 }

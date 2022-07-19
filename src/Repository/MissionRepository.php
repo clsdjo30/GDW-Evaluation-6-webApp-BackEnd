@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Mission;
+use App\Entity\Target;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,28 +40,80 @@ class MissionRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Mission[] Returns an array of Mission objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param Target $targets
+     * @return array
+     */
+    public function findTargetFromMission(Target $targets): array
+    {
+        $queryBuilder = $this->createQueryBuilder('m')
+            ->join('m.target', 'u')
+            ->where('u.firstname = :firstname')
+            ->setParameter('firstname', $targets->getFirstname());
+        return $queryBuilder->getQuery()->getResult();
 
-//    public function findOneBySomeField($value): ?Mission
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    }
+
+    /**
+     * @return float|int|mixed|string
+     */
+    public function countStatusInPreparation(): mixed
+    {
+        $totalInPreparation = $this->createQueryBuilder('m')
+            ->join('m.status', 's')
+            ->where('s.id = 1')
+            ->select('COUNT(s.id) as value');
+        return $totalInPreparation->getQuery()->getResult();
+
+    }
+
+    /**
+     * @return float|int|mixed|string
+     */
+    public function countStatusInProgress(): mixed
+    {
+        $totalInProgress = $this->createQueryBuilder('m')
+            ->join('m.status', 's')
+            ->where('s.id = 2')
+            ->select('COUNT(s.id) as value');
+        return $totalInProgress->getQuery()->getResult();
+
+    }
+
+    /**
+     * @return float|int|mixed|string
+     */
+    public function countStatusFinished(): mixed
+    {
+        $totalFinished = $this->createQueryBuilder('m')
+            ->join('m.status', 's')
+            ->where('s.id = 3')
+            ->select('COUNT(s.id) as value');
+        return $totalFinished->getQuery()->getResult();
+
+    }
+
+    /**
+     * @return float|int|mixed|string
+     */
+    public function countStatusFailed(): mixed
+    {
+        $totalFailed = $this->createQueryBuilder('m')
+            ->join('m.status', 's')
+            ->where('s.id = 4')
+            ->select('COUNT(s.id) as value');
+        return $totalFailed->getQuery()->getResult();
+
+    }
+
+    /**
+     * @return float|int|mixed|string
+     */
+    public function countMission(): mixed
+    {
+        $totalMission = $this->createQueryBuilder('m')
+            ->select('COUNT(m.id) as value');
+        return $totalMission->getQuery()->getResult();
+
+    }
 }

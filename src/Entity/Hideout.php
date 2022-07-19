@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use App\Repository\HideoutRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: HideoutRepository::class)]
-class Hideout
+class Hideout implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -101,5 +102,10 @@ class Hideout
         $this->mission = $mission;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return 'Pays : ' . $this->country . ' - Code : ' . $this->code . ' - Adresse: ' . $this->address;
     }
 }
