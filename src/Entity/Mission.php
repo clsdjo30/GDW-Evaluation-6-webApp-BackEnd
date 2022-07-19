@@ -341,4 +341,31 @@ class Mission implements Stringable
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function contactAndMissionNationalityIsEqual(): bool
+    {
+        $missionCountry = $this->country;
+        $nationalityContacts = $this->contacts;
+
+        foreach ($nationalityContacts as $contact) {
+            if ($missionCountry != $contact->getCountry()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    #[ORM\PrePersist]
+    public function missionIsValid(): bool
+    {
+        return !(!$this->contactAndMissionNationalityIsEqual());
+
+    }
+
 }
