@@ -31,7 +31,8 @@ class ContactType extends AbstractType
             ])
             ->add('country', EntityType::class, [
                 'class' => Country::class,
-                'label' => 'Pays'
+                'label' => 'Pays',
+                'help' => " Le ou les contacts sont obligatoirement du même pays que la mission"
             ]);
     }
 

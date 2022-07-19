@@ -9,6 +9,8 @@ use App\Form\HideoutType;
 use App\Form\TargetType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -41,6 +43,18 @@ class MissionCrudController extends AbstractCrudController
 
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+
+
+        $missionDetails = Action::new('missionDetail', 'Détails')
+            ->linkToCrudAction(Crud::PAGE_DETAIL);
+
+
+        return $actions
+            ->add(Crud::PAGE_INDEX, $missionDetails);
+    }
+
 
     public function configureFields(string $pageName): iterable
     {
@@ -62,25 +76,27 @@ class MissionCrudController extends AbstractCrudController
         yield TextareaField::new('description')->setColumns(6);
 
         // Affichage de la cible
-        yield FormField::addTab('Les Cibles');
+        yield FormField::addPanel('Les Cibles et les Agents');
         yield CollectionField::new('targets', 'Cible')
+            ->setColumns(6)
             ->setEntryType(TargetType::class)
+            ->setEntryIsComplex()
+            ->setRequired(true);
+
+        yield CollectionField::new('agents', 'Agents')
+            ->setColumns(6)
+            ->setEntryType(AgentType::class)
             ->setRequired(true);
 
         // Affichage du contact
-        yield FormField::addTab('Les Contacts');
+        yield FormField::addPanel('Les Contacts');
         yield CollectionField::new('contacts', 'Contact')
             ->setEntryType(ContactType::class)
             ->setRequired(true);
 
-        // Affichage des Agents
-        yield FormField::addTab('Les Agents');
-        yield CollectionField::new('agents', 'Agents')
-            ->setEntryType(AgentType::class)
-            ->setRequired(true);
 
         // Affichage des Planques
-        yield FormField::addTab('Les Planques');
+        yield FormField::addPanel('Les Planques');
         yield CollectionField::new('hideout', 'Planques')
             ->setEntryType(HideoutType::class)
             ->setRequired(false);
@@ -94,6 +110,13 @@ class MissionCrudController extends AbstractCrudController
 
         if (!$entityInstance instanceof Mission) {
             return;
+        }
+
+
+        if (!$entityInstance->missionIsValid()) {
+
+            $this->addFlash('error', 'Votre formulaire contient des erreurs');
+
         }
 
         $entityInstance->setStartAt(new DateTime());

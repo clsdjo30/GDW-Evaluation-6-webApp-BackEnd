@@ -341,4 +341,87 @@ class Mission implements Stringable
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function contactAndMissionNationalityIsEqual(): bool
+    {
+        $missionCountry = $this->country;
+        $nationalityContacts = $this->contacts;
+
+        foreach ($nationalityContacts as $contact) {
+            if ($missionCountry != $contact->getCountry()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function targetAndAgentAreDifferent(): bool
+    {
+        $targetNationality = $this->targets;
+        $agentNationality = $this->agents;
+
+        foreach ($targetNationality as $target) {
+            foreach ($agentNationality as $agent) {
+                if ($target->getCountry() === $agent->getCountry()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function agentHadMissionSkill(): bool
+    {
+        $missionSkill = $this->type;
+        $skillAgents = $this->agents;
+
+        $validSkill = 0;
+
+        foreach ($skillAgents as $agent) {
+            $agentSkills = $agent->showSkills();
+            if (in_array($missionSkill->getName(), $agentSkills)) {
+                $validSkill += 1;
+            }
+            if ($validSkill == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hideoutAndMissionCountryIsEqual(): bool
+    {
+        $missionCountry = $this->country;
+        $hideoutCountry = $this->hideout;
+
+        foreach ($hideoutCountry as $hideout) {
+            if ($missionCountry !== $hideout->getCountry()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    #[ORM\PrePersist]
+    public function missionIsValid(): bool
+    {
+        return !(!$this->contactAndMissionNationalityIsEqual() || !$this->targetAndAgentAreDifferent() || !$this->agentHadMissionSkill() || !$this->hideoutAndMissionCountryIsEqual());
+
+    }
+
 }
