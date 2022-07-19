@@ -23,7 +23,8 @@ class HideoutType extends AbstractType
             ])
             ->add('country', EntityType::class, [
                 'class' => Country::class,
-                'label' => 'Pays'
+                'label' => 'Pays',
+                'help' => 'La planque se trouve obligatoirement dans le même pays que votre mission'
             ]);
     }
 

@@ -32,7 +32,8 @@ class TargetType extends AbstractType
             ])
             ->add('country', EntityType::class, [
                 'class' => Country::class,
-                'label' => 'Pays'
+                'label' => 'Pays',
+                'help' => " La cible ne peux pas être du même pays que l'agent"
             ]);
     }
 

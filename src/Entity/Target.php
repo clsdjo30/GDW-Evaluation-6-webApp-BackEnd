@@ -142,6 +142,6 @@ class Target implements Stringable
 
     public function __toString(): string
     {
-        return 'Pays : ' . $this->country . ' - Cible : ' . $this->firstname . ' ' . $this->lastname . ' - Code : ' . $this->code_name;
+        return $this->firstname . ' ' . $this->lastname . '  Pays : ' . $this->country . ' - Nom de  Code : ' . $this->code_name;
     }
 }

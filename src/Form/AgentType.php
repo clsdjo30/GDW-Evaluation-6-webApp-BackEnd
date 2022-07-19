@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Agent;
 use App\Entity\Country;
+use App\Entity\Skill;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -25,13 +26,21 @@ class AgentType extends AbstractType
             ->add('code_name', TextType::class, [
                 'label' => 'Nom de code'
             ])
+            ->add('skills', EntityType::class, [
+                'class' => Skill::class,
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Spécialités',
+                'help' => "L'agent doit avoir au moins une spécialité en rapport à la mission"
+            ])
             ->add('birthday', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date de naissance'
             ])
             ->add('country', EntityType::class, [
                 'class' => Country::class,
-                'label' => 'Pays'
+                'label' => 'Pays',
+                'help' => " L'agent ne peux pas être du même pays que la cible"
             ]);
     }
 
