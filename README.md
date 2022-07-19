@@ -47,6 +47,8 @@ mdp: password
 
 ### Screenshot
 
+[Class diagram ](./overview/Diagramme%20de%20classe%20KGB-Consulting.png)
+
 [Mobile View](./overview/mobile-view.png)  
 [Desktop View](./overview/desktop-view.png)  
 [Admin View](./overview/admin-view.png)  
