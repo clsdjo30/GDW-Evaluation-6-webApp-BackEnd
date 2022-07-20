@@ -60,6 +60,7 @@ class MissionCrudController extends AbstractCrudController
     {
 
         yield FormField::addTab("Informations de Mission");
+        yield AssociationField::new('user')->hideOnForm();
         yield IdField::new('id')->hideOnIndex()->hideOnForm();
         yield TextField::new('title', 'Titre de mission')->setColumns(6);
         yield TextField::new('code_name', 'Nom de Code')->setColumns(6);

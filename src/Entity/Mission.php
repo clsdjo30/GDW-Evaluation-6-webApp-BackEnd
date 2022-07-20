@@ -115,8 +115,9 @@ class Mission implements Stringable
 
     #[ORM\ManyToOne(
         targetEntity: User::class,
+        cascade: ['persist', 'remove'],
         inversedBy: 'missions')]
-    private ?User $user = null;
+    private ?User $user;
 
     public function __construct()
     {
