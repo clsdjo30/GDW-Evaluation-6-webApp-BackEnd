@@ -113,6 +113,11 @@ class Mission implements Stringable
     #[Assert\NotBlank]
     private ?Statute $status;
 
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        inversedBy: 'missions')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->targets = new ArrayCollection();
@@ -422,6 +427,18 @@ class Mission implements Stringable
     {
         return !(!$this->contactAndMissionNationalityIsEqual() || !$this->targetAndAgentAreDifferent() || !$this->agentHadMissionSkill() || !$this->hideoutAndMissionCountryIsEqual());
 
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
 }

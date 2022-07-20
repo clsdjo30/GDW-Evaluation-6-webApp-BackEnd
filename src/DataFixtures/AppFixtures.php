@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         $countries = [];
-        $consultant = [];
+        $missions = [];
         $statuts = [];
         $skills = [];
 
@@ -49,20 +49,7 @@ class AppFixtures extends Fixture
 
         $manager->persist($admin);
 
-        /*
-                for ($i = 0; $i  < 10; $i++)
-                {
-                    $consultant = new User();
-
-                    $consultant->setEmail($faker->email());
-                    $consultant->setRoles(['ROLE_CONSULTANT']);
-                    $consultant->setPassword($this->encoder->hashPassword($consultant, 'password'));
-
-
-                    $manager->persist($consultant);
-                    $consultant[] = $consultant;
-                }
-        */      //On génère les status de mission et on les stock dans un tableau
+        //On génère les status de mission et on les stock dans un tableau
         $statuteValues = array("En Préparation", "En Cours", "Terminée", "Echouée");
 
         foreach ($statuteValues as $statuteValue) {
@@ -107,6 +94,7 @@ class AppFixtures extends Fixture
 
 
         for ($i = 0; $i < 30; $i++) {
+
             $mission = new Mission();
 
             $mission->setTitle($faker->realTextBetween(15, 25))
@@ -166,8 +154,8 @@ class AppFixtures extends Fixture
 
             $manager->persist($contact);
 
+            $admin->addMission($mission);
 
-            /*
             if (!$mission->missionIsValid())
             {
                 echo 'Certain élément de la mission ne sont pas valide !  < /br>';
@@ -175,8 +163,8 @@ class AppFixtures extends Fixture
             } else {
                 $manager->persist($mission);
             }
-            */
             $manager->persist($mission);
+
         }
         $manager->flush();
 
