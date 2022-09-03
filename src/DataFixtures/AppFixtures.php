@@ -15,8 +15,12 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 
+/**
+ * @codeCoverageIgnore
+ */
 class AppFixtures extends Fixture
 {
     /**
@@ -26,8 +30,10 @@ class AppFixtures extends Fixture
      */
     private UserPasswordHasherInterface $encoder;
 
-    public function __construct(UserPasswordHasherInterface $encoder)
-    {
+    public function __construct(
+        UserPasswordHasherInterface $encoder,
+        private SluggerInterface $slugger
+    ) {
         $this->encoder = $encoder;
     }
 
@@ -43,6 +49,12 @@ class AppFixtures extends Fixture
 
         $admin = new User();
         $admin->setEmail('cedric@kgb.com');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setPassword($this->encoder->hashPassword($admin, 'password'));
+
+        // User Test
+        $admin = new User();
+        $admin->setEmail('test@kgb.com');
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setPassword($this->encoder->hashPassword($admin, 'password'));
 
@@ -93,7 +105,7 @@ class AppFixtures extends Fixture
         }
 
 
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 10; $i++) {
 
             $mission = new Mission();
 
@@ -156,8 +168,7 @@ class AppFixtures extends Fixture
 
             $admin->addMission($mission);
 
-            if (!$mission->missionIsValid())
-            {
+            if (!$mission->missionIsValid()) {
                 echo 'Certain élément de la mission ne sont pas valide !  < /br>';
 
             } else {
@@ -166,6 +177,33 @@ class AppFixtures extends Fixture
             $manager->persist($mission);
 
         }
+        // mission test
+
+        $missionTest = new Mission();
+        $missionTest->setTitle('Mission de test')
+            ->setCodeName($faker->sentence(3))
+            ->setCountry($faker->randomElement($countries))
+            ->setStatus($faker->randomElement($statuts))
+            ->setType($faker->randomElement($skills))
+            ->setDescription('Description de test')
+            ->setSlug('mission-test')
+            ->setStartAt($faker->dateTime())
+            ->setEndAt($faker->dateTime());
+
+        $agentTest = new Agent();
+        $agentTest->setFirstname('Agent')
+            ->setLastname('de test')
+            ->setCodeName($faker->realTextBetween(6, 16))
+            ->setBirthday($faker->dateTime())
+            ->addSkill($faker->randomElement($skills))
+            ->setCountry($faker->randomElement($countries))
+            ->setMission($missionTest);
+        $manager->persist($agentTest);
+
+        $manager->persist($missionTest);
+        $manager->persist($agentTest);
+
+
         $manager->flush();
 
     }

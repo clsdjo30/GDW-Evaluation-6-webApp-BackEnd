@@ -12,10 +12,12 @@
   - [Installation de Bootstrap](#installation-de-bootstrap)
   - [Ajout de Fontawesome](#ajout-de-fontawesome)
   - [Installation du bundle Paginator](#installation-du-bundle-paginator)
+  - [Installation Doctrine Extension bundle](#installation-doctrine-extensions-bundle)
   - [Installation du bundle Twig Extra](#installation-du-bundle-paginator)
   - [Installation des Datafixture et FakerPhp](#installation-des-datafixture-et-fakerphp)
   - [Installation du bundle EAsyadmin](#installation-du-bundle-easyadmin)
 - [Déploiement](#deployer-le-site-en-production-sur-heroku)
+- [Tests](#test)
 
 ## Aperçus
 
@@ -102,8 +104,10 @@ Creation de la base de données
 6. Installation de Sass Loader et Sass  
    ``npm install sass-loader node-sass --save-dev``
 
-7. Installation de Postcss et autoprefixer  
-   ``npm instal postcss-loader autoprefixer --dev``
+7. Installation de Postcss et autoprefixer
+   ````
+
+npm instal postcss-loader autoprefixer --dev
 
 8. On crée un fichier postcss.config.js dans lequel on ajoute :
 
@@ -191,6 +195,45 @@ knp_paginator:
 2. Utilisation pour couper un long texte  
    ``{{ mission.description | u.truncate(100, '...', true) }}``
 
+### Installation Doctrine Extensions bundle
+
+``
+composer require stof/doctrine-extensions-bundle
+``
+
+#### Sluggable
+
+Dans le fichier 'config/packages/stof_doctrine_extensions.yaml' on ajoute :
+
+````
+//config/packages/stof_doctrine_extensions.yaml
+    orm:
+        default:
+            sluggable: true
+````   
+
+Dans l'entity ou l'on veut transformer l'url, on ajoute la propriété $slug avec ses getter et setter et on ajoute
+l'annotation:
+
+````
+//Namespace\Entity\...
+
+ #[Slug(fields: ["title"])]
+    private ?string $slug;
+````   
+
+on vérifie l'import du use :   
+``
+use Gedmo\Mapping\Annotation\Slug;
+``
+
+Dans Twig pour nommer le chemin   
+``
+{{ path('#nom de la route#'), {slug: '#nom de l'entité#.slug'}}
+``
+
+Dans le Controller on remplace le chemin {id} par {slug}
+
 ### Installation des Datafixture et FakerPhp
 
 1. Installation du bundle symfony Fixture  
@@ -264,6 +307,49 @@ web: heroku-php-apache2 public/
    ``
    git push heroku main
    ``
+
+### Tests
+
+Pour créer un test :  
+``
+symfony console make:test
+``  
+puis choisir l'option de test
+
+```
+TestCase     // pour créer un test unitaire 
+WebTestCase  // pour créer un test fonctionnel
+    // pour créer un test d'integration
+    // pour créer un test
+
+```
+
+Pour visualiser le Code Coverage :  
+``
+php bin/phpunit --coverage-html var/log/test/test-coverage
+``  
+la commande créee le dossier dans var/log/test
+
+#### Test Unnitaires
+
+Pour les test unitaire des entités, je teste les assesseurs(getters) et mutateurs(setters) avec 'assertTrue,
+assertFalse' et 'assertContains' pour verifier les relations d'entités.
+
+Création de la base de donnée de test  
+``
+symfony console doctrine:database:create --env=test
+``
+
+on applique les migrations  
+``
+symfony console doctrine:migration:migrate --env=test -n
+``  
+N.B le '-n' applique les migrations sans demander la validation
+
+On lance les fixtures  
+``
+symfony console doctrine:fixture:load --env=test
+``
 
 
 

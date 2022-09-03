@@ -32,7 +32,7 @@ class MissionController extends AbstractController
         ]);
     }
 
-    #[Route('/mission/{id}', methods: ['GET'], name: 'mission_show')]
+    #[Route('/mission/{slug}', name: 'mission_show', methods: ['GET'])]
     public function missionShow(Mission $mission): Response
     {
         // Symfony's 'dump()' function is an improved version of PHP's 'var_dump()' but

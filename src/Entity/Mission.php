@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
+
 use App\Repository\MissionRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionRepository::class)]
+#[UniqueEntity(fields: ['slug'], errorPath: 'title', message: 'mission.slug_unique')]
 class Mission implements Stringable
 {
     #[ORM\Id]
@@ -118,6 +121,10 @@ class Mission implements Stringable
         cascade: ['persist', 'remove'],
         inversedBy: 'missions')]
     private ?User $user;
+
+    #[ORM\Column(length: 255)]
+    #[Slug(fields: ["title"])]
+    private ?string $slug;
 
     public function __construct()
     {
@@ -438,6 +445,18 @@ class Mission implements Stringable
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
